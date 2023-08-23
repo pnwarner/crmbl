@@ -13,9 +13,6 @@ publish_user_group="$publish_user:$publish_group"
 
 mkdir $path_string
 
-#delete all the README.md files from repos
-find . -name 'README.md' -delete
-
 #Copy all repo files to new temp dir
 cp -r $current_path/$project_name-engine/* $path_string/
 
@@ -29,6 +26,9 @@ cp -r $current_path/$project_name-templates/$project_name-template-default/* $pa
 
 mkdir $path_string/$project_name/include/media
 mkdir $path_string/$project_name/include/media/site
+
+#delete all README.md in new site
+find $path_string/. -name 'README.md' -delete
 
 sudo cp -r $path_string/$project_name $publish_root
 sudo chown -R $publish_user_group $publish_path
