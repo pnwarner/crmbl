@@ -6,7 +6,7 @@
 #
 
 current_path=$(pwd)
-output_folder="new_site"
+output_folder="crmbl_site"
 path_string="$current_path/$output_folder"
 project_name="crmbl"
 project_repo="https://github.com/pnwarner/$project_name"
