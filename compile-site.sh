@@ -42,4 +42,4 @@ sudo chown -R $publish_user_group $publish_path
 #echo "Cleaning up."
 rm -r $path_string
 echo "Done."
-echo "The default site is set to point to http://127.0.0.1/"
+echo "The default site is set to point to http://127.0.0.1:8080/"
