@@ -6,8 +6,10 @@
 			require_once($site_mod_client_info_js_path);
 		}
 	}
-?>
-<script type="text/javascript" src="/include/script/site/<?=$site_config['site_name']?>/js/main.js">
 
+	//Load additional scripts in /include/script/site/<SITE NAME>/js/*
+?>
+<!--<script type="text/javascript" src="/include/script/site/<?=$site_config['site_name']?>/js/main.js">-->
+<script type="text/javascript" src="/include/script/template/<?=$site_config['theme_script']?>/main.js">
 </script>
 
