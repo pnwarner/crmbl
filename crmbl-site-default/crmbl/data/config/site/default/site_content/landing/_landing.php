@@ -1,7 +1,10 @@
+<?php
+    global $site_config;
+?>
+
 <h1>crmbl CMS</h1>
-<h2>https://www.github.com/pnwarner/crmbl</h2>
-<h2>Landing Page</h2>
-<br />
+<h2>https://github.com/pnwarner/crmbl</h2>
+<h3>Site landing for: <?=$site_config['site_name']?></h3>
 <p>
-This is still going through a lot of development.
+This project is under development.
 </p>
