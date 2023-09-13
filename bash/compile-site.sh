@@ -1,9 +1,20 @@
 #!/usr/bin/bash
 
+#Should make a clone of crmbl/ repo
+#and include
+#crmbl-engine, crmbl-mods, crmbl-sites, crmbl-templates
+#
+#Those repo folders inside of crmbl/ will then be combined
+#into $output_folder/crmbl
+#
+#The $output_folder/crmbl will then be copied to $publish_root
+#and server user/group will be set to run php site
+
 current_path=$(pwd)
 output_folder="crmbl_site"
 path_string="$current_path/$output_folder"
 project_name="crmbl"
+project_repo="https://github.com/pnwarner/$project_name"
 publish_root="/var/www/html"
 publish_path="$publish_root/$project_name"
 publish_user="www-data"
@@ -41,7 +52,7 @@ fi
 #delete all the README.md files from repos
 find $path_string/. -name 'README.md' -delete
 
-#Publish to web server:
+#Publish to web server path:
 if [[ -d "$publish_path" ]]
 then
     sudo rm -r $publish_path
