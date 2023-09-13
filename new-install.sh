@@ -9,6 +9,7 @@ current_path=$(pwd)
 output_folder="crmbl_site"
 path_string="$current_path/$output_folder"
 project_name="crmbl"
+project_repo="https://github.com/pnwarner/$project_name"
 publish_root="/var/www/html"
 publish_path="$publish_root/$project_name"
 publish_user="www-data"
