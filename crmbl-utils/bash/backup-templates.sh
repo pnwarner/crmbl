@@ -1,9 +1,5 @@
 #!/usr/bin/bash
 
-#crmbl site file paths:
-
-#Store in: crmbl/crmbl-templates/
-
 project_dir="../../crmbl_site/crmbl"
 declare -a template_arr=()
 declare -a new_templates=()
