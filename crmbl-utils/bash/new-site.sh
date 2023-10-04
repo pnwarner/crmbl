@@ -5,7 +5,8 @@ project_name="crmbl_site"
 echo "New site name: "
 read new_site_name
 
-new_site_path="../../$project_name/crmbl/data/config/site/$new_site_name"
+new_site_path=$(bash ./config-util.sh --get-key-value crmblProjectRoot = ./crmbl.conf)
+new_site_path+="/data/config/site/$new_site_name"
 new_site_define_path="$new_site_path/_define"
 new_site_request_path="$new_site_path/_request"
 new_site_content_path="$new_site_path/site_content"
@@ -37,3 +38,4 @@ mkdir ../../$project_name/crmbl/include/media/site/$new_site_name
 bash ./new-site-define.sh $new_site_name $new_site_define_path/_define.php
 
 echo "Done, new site added."
+echo "The new site is currently in the project staging folder.  Utilize the backup-site script to isolate the site from the project."

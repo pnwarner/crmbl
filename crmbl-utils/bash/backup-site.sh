@@ -5,10 +5,39 @@
 project_name="crmbl"
 stage_name="crmbl_site"
 repo_name="$project_name-sites" #crmbl-sites
-staging_path="../.."
-publish_path="$staging_path/$repo_name" #../../crmbl-sites
-site_pull_path="$staging_path/$stage_name/$project_name" #../../crmbl_site/crmbl
+publish_path=$(bash ./config-util.sh --get-key-value SitesPath = ./crmbl.conf)
+site_pull_path=$(bash ./config-util.sh --get-key-value crmblProjectRoot = ./crmbl.conf)
 site_dest_path="$publish_path" #../../crmbl-sites
+
+if [[ -z $1 ]]
+then
+    echo "No site was specified to be backed up."
+    exit 1
+fi
+
+if [[ ! -z $2 ]]
+then
+    if [[ "$2" == "--location" ]]
+    then
+        if [[ -z $3 ]]
+        then
+            echo "No crmbl project location given. Exiting"
+            exit 1
+        fi
+    else
+        echo "Invalid option. Exiting"
+        exit 1
+    fi
+    if [[ -d "$3/crmbl/data/config/site" ]]
+    then
+        site_pull_path="$3/crmbl"
+    else
+        echo "Invalid project path provided. Exiting"
+        exit 1
+    fi
+fi
+
+echo "Backing up site: [ $1 ]"
 
 function create_directories() {
     for directory in "${site_paths[@]}"
@@ -65,6 +94,16 @@ function backup_site() {
         "$dest_path/crmbl/include/script/site"
         "$dest_path/crmbl/include/script/site/$site_name"
     )
+
+    if [[ ! -d "$publish_path" ]]
+    then
+        mkdir $publish_path
+    fi
+
+    if [[ ! -d "$project_site_path" ]]
+    then
+        mkdir $project_site_path
+    fi
 
     create_directories
     copy_site_media

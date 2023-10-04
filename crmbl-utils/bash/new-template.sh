@@ -15,8 +15,8 @@
 #   --css, c
 #   --js, j
 project_name="crmbl"
-site_path="../../crmbl_site"
-project_path="$site_path/$project_name"
+site_path=$(bash ./config-util.sh --get-key-value SitePath = ./crmbl.conf)
+project_path=$(bash ./config-util.sh --get-key-value crmblProjectRoot = ./crmbl.conf)
 template_name=""
 lang_string=""
 is_option=false
