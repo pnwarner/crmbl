@@ -1,16 +1,8 @@
 #!/usr/bin/bash
 
-mods_directory="../../crmbl-mods"
 declare -a mod_list=()
-for mod in "$mods_directory"/*
-do
-  if [[ -d "$mod" ]] #Process directories only
-  then
-    mod=${mod##*/} #Remove file path
-    mod=${mod//"crmbl-mod-"/} #remove folder name prefix
-    mod_list+=("$mod")
-  fi
-done
+mod_list_string=$(bash ./list-available-mods.sh)
+IFS=' ' read -r -a mod_list <<< "$mod_list_string"
 
 for mod in "${mod_list[@]}"
 do

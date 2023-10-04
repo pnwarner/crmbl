@@ -1,16 +1,9 @@
 #!/usr/bin/bash
 
-templates_directory="../../crmbl-templates"
 declare -a template_list=()
-for template in "$templates_directory"/*
-do
-  if [[ -d "$template" ]] #Process directories only
-  then
-    template=${template##*/} #Remove file path
-    template=${template//"crmbl-template-"/} #remove folder name prefix
-    template_list+=("$template")
-  fi
-done
+
+template_list_string=$(bash ./list-available-templates.sh)
+IFS=' ' read -r -a template_list <<< "$template_list_string"
 
 for template in "${template_list[@]}"
 do

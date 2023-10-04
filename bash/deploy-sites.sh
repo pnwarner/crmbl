@@ -1,16 +1,8 @@
 #!/usr/bin/bash
 
-sites_directory="../../crmbl-sites"
 declare -a site_list=()
-for site in "$sites_directory"/*
-do
-  if [[ -d "$site" ]] #Process directories only
-  then
-    site=${site##*/} #Remove file path
-    site=${site//"crmbl-site-"/} #remove folder name prefix
-    site_list+=("$site")
-  fi
-done
+site_list_string=$(bash ./list-available-sites.sh)
+IFS=' ' read -r -a site_list <<< "$site_list_string"
 
 for site in "${site_list[@]}"
 do

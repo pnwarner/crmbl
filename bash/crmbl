@@ -1,0 +1,3 @@
+#!/usr/bin/bash
+cd crmbl-utils/bash
+bash ./cli-menu.sh

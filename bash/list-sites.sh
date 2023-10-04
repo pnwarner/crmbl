@@ -1,5 +1,8 @@
 #!/usr/bin/bash
 
+sites_directory=$(bash ./config-util.sh --get-key-value crmblProjectRoot = ./crmbl.conf)
+sites_directory+="/data/config/site"
+
 if [[ ! -z $1 ]]
 then
     if [[ "$1" == "--location" ]]
@@ -15,21 +18,19 @@ then
     fi
     if [[ -d "$2/crmbl/data/config/site" ]]
     then
-        dir_list_string=$(bash ./list-sites.sh --location $2)
-        IFS=' ' read -r -a dir_list <<< "$dir_list_string"
+        sites_directory="$2/crmbl/data/config/site"
     else
         echo "Invalid project path provided. Exiting"
         exit 1
     fi
-    for dir in "${dir_list[@]}"
-    do
-        bash ./backup-site.sh "$dir" --location "$2"
-    done
-else
-    dir_list_string=$(bash ./list-sites.sh)
-    IFS=' ' read -r -a dir_list <<< "$dir_list_string"
-    for dir in "${dir_list[@]}"
-    do
-        bash ./backup-site.sh "$dir"
-    done
 fi
+
+declare -a dir_list=()
+
+for site in "$sites_directory"/*
+do
+  site=${site##*/}
+  dir_list+=("$site")
+done
+
+echo "${dir_list[@]}"
