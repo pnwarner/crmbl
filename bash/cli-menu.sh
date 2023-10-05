@@ -37,6 +37,26 @@ templates_published=false
 #####################
 
 function check_installs() {
+    if [[ ! -d "$site_path" ]]
+    then
+        site_deployed=false
+        engine_deployed=false
+        mods_deployed=false
+        sites_deployed=false
+        templates_deployed=false
+    else
+        site_deployed=true
+    fi
+    if [[ ! -d "$publish_path" ]]
+    then
+        site_published=false
+        engine_published=false
+        mods_published=false
+        sites_published=false
+        templates_published=false
+    else
+        site_published=true
+    fi
     if [[ ! -d "$site_path" && ! -d "$publish_path" ]]
         then
             no_action=true
@@ -89,7 +109,7 @@ function display_installs() {
         then
             printf " (!)\n"
         else
-            check_deployed_resources
+            #check_deployed_resources
             printf " "
             if [[ $engine_deployed == true ]]
             then
@@ -128,7 +148,7 @@ function display_installs() {
         then
             printf " (!)\n"
         else
-            check_published_resources
+            #check_published_resources
             printf " "
             if [[ $engine_published == true ]]
             then
@@ -190,7 +210,8 @@ function check_resources() {
 }
 
 function display_resources() {
-    check_resources
+    #Outputs need to be seperated into a display_resources() function
+    #check_resources
     printf "  ["
     if [[ $engine_exist == false ]]
     then
@@ -243,6 +264,7 @@ function check_available_resources() {
         engine_available=false
     fi
     temp_string=$(bash ./list-available-mods.sh)
+    #echo "mods: $temp_string"
     if [[ ! -z $temp_string ]]
     then
         if [[ "$temp_string" == "*" || "$temp_string" == "Invalid project path provided. Exiting" ]]
@@ -283,15 +305,18 @@ function check_published_resources() {
         if [[ -d "$web_root/crmbl/data/source/site" ]]
         then
             engine_published=true
+            engine_exist=true
         else
             engine_published=false
         fi
         temp_string=$(bash ./list-mods.sh --location $web_root)
+        #echo "mods: $temp_string"
         if [[ "$temp_string" == "*" || "$temp_string" == "Invalid project path provided. Exiting" ]]
         then
             mods_published=false
         else
             mods_published=true
+            mods_exist=true
         fi
         temp_string=$(bash ./list-sites.sh --location $web_root)
         if [[ "$temp_string" == "*" || "$temp_string" == "Invalid project path provided. Exiting" ]]
@@ -299,6 +324,7 @@ function check_published_resources() {
             sites_published=false
         else
             sites_published=true
+            sites_exist=true
         fi
         temp_string=$(bash ./list-templates.sh --location $web_root)
         if [[ "$temp_string" == "*" ]]
@@ -306,6 +332,7 @@ function check_published_resources() {
             templates_published=false
         else
             templates_published=true
+            templates_exist=true
         fi
     fi
 }
@@ -316,15 +343,18 @@ function check_deployed_resources() {
         if [[ -d "$site_path/crmbl/data/source/site" ]]
         then
             engine_deployed=true
+            engine_exist=true
         else
             engine_deployed=false
         fi
         temp_string=$(bash ./list-mods.sh)
+        #echo "mods: $temp_string"
         if [[ "$temp_string" == "*" || "$temp_string" == "Invalid project path provided. Exiting" ]]
         then
             mods_deployed=false
         else
             mods_deployed=true
+            mods_exist=true
         fi
         temp_string=$(bash ./list-sites.sh)
         if [[ "$temp_string" == "*" || "$temp_string" == "Invalid project path provided. Exiting" ]]
@@ -332,6 +362,7 @@ function check_deployed_resources() {
             sites_deployed=false
         else
             sites_deployed=true
+            sites_exist=true
         fi
         temp_string=$(bash ./list-templates.sh)
         if [[ "$temp_string" == "*" ]]
@@ -339,6 +370,7 @@ function check_deployed_resources() {
             templates_deployed=false
         else
             templates_deployed=true
+            exist=true
         fi
     fi
 }
@@ -408,9 +440,11 @@ function process_delete_templates_menu_options() {
             ;;
         help)
             MENU_ERR_MSG="Load help documentation"
+            gen_menu "help"
             ;;
         about)
             MENU_ERR_MSG="Brief project description"
+            gen_meu "about"
             ;;
         *)
             if [[ ! -d "$templates_path/crmbl-template-$1" ]]
@@ -453,9 +487,11 @@ function process_remove_templates_menu_options() {
             ;;
         help)
             MENU_ERR_MSG="Load help documentation"
+            gen_menu "help"
             ;;
         about)
             MENU_ERR_MSG="Brief project description"
+            gen_menu "about"
             ;;
         *)
             declare -a possible_paths=(
@@ -522,9 +558,11 @@ function process_backup_templates_menu_options() {
             ;;
         help)
             MENU_ERR_MSG="Load help documentation"
+            gen_menu "help"
             ;;
         about)
             MENU_ERR_MSG="Brief project description"
+            gen_menu "about"
             ;;
         *)
             declare -a possible_paths=(
@@ -591,9 +629,11 @@ function process_deploy_templates_menu_options() {
             ;;
         help)
             MENU_ERR_MSG="Load help documentation"
+            gen_menu "help"
             ;;
         about)
             MENU_ERR_MSG="Brief project description"
+            gen_menu "about"
             ;;
         *)
             if [[ ! -d "$templates_path/crmbl-template-$1" ]]
@@ -695,9 +735,11 @@ function process_templates_menu_options() {
             ;;
         help)
             MENU_ERR_MSG="Load help documentation"
+            gen_menu "help"
             ;;
         about)
             MENU_ERR_MSG="Brief project description"
+            gen_menu "about"
             ;;
         *)
             MENU_ERR_MSG="INVALID SELECTION: $1"
@@ -737,9 +779,11 @@ function process_delete_sites_menu_options() {
             ;;
         help)
             MENU_ERR_MSG="Load help documentation"
+            gen_menu "help"
             ;;
         about)
             MENU_ERR_MSG="Brief project description"
+            gen_menu "about"
             ;;
         *)
             if [[ ! -d "$sites_path/crmbl-site-$1" ]]
@@ -782,9 +826,11 @@ function process_remove_sites_menu_options() {
             ;;
         help)
             MENU_ERR_MSG="Load help documentation"
+            gen_menu "help"
             ;;
         about)
             MENU_ERR_MSG="Brief project description"
+            gen_menu "about"
             ;;
         *)
             if [[ ! -d "$site_path/crmbl/data/config/site/$1" ]]
@@ -831,9 +877,11 @@ function process_backup_sites_menu_options() {
             ;;
         help)
             MENU_ERR_MSG="Load help documentation"
+            gen_menu "help"
             ;;
         about)
             MENU_ERR_MSG="Brief project description"
+            gen_menu "about"
             ;;
         *)
             if [[ ! -d "$site_path/crmbl/data/config/site/$1" ]]
@@ -880,9 +928,11 @@ function process_deploy_sites_menu_options() {
             ;;
         help)
             MENU_ERR_MSG="Load help documentation"
+            gen_menu "help"
             ;;
         about)
             MENU_ERR_MSG="Brief project description"
+            gen_menu "about"
             ;;
         *)
             if [[ ! -d "$sites_path/crmbl-site-$1" ]]
@@ -964,21 +1014,18 @@ function process_sites_menu_options() {
             MENU_ERR_MSG="Load Sites from local path"
             bash ./load-local-repo.sh "sites"
             sleep 1
-            check_resources
             gen_menu "sites"
             ;;
         download-sites)
             MENU_ERR_MSG="Download Sites from Repo"
             bash ./download-repo.sh "sites"
             sleep 1
-            check_resources
             gen_menu "sites"
             ;;
         pull-deployed-sites)
             MENU_ERR_MSG="Pull deployed sites to crmbl-sites"
             bash ./backup-sites.sh
             sleep 1
-            check_resources
             gen_menu "sites"
             ;;
         quit)
@@ -987,9 +1034,11 @@ function process_sites_menu_options() {
             ;;
         help)
             MENU_ERR_MSG="Load help documentation"
+            gen_menu "help"
             ;;
         about)
             MENU_ERR_MSG="Brief project description"
+            gen_menu "about"
             ;;
         *)
             MENU_ERR_MSG="INVALID SELECTION: $1"
@@ -1030,9 +1079,11 @@ function process_delete_modules_menu_options() {
             ;;
         help)
             MENU_ERR_MSG="Load help documentation"
+            gen_menu "help"
             ;;
         about)
             MENU_ERR_MSG="Brief project description"
+            gen_menu "about"
             ;;
         *)
             if [[ ! -d "$modules_path/crmbl-mod-$1" ]]
@@ -1075,9 +1126,11 @@ function process_remove_modules_menu_options() {
             ;;
         help)
             MENU_ERR_MSG="Load help documentation"
+            gen_menu "help"
             ;;
         about)
             MENU_ERR_MSG="Brief project description"
+            gen_menu "about"
             ;;
         *)
             if [[ ! -d "$site_path/crmbl/data/source/mod/$1" ]]
@@ -1124,9 +1177,11 @@ function process_backup_modules_menu_options() {
             ;;
         help)
             MENU_ERR_MSG="Load help documentation"
+            gen_menu "help"
             ;;
         about)
             MENU_ERR_MSG="Brief project description"
+            gen_menu "about"
             ;;
         *)
             if [[ ! -d "$site_path/crmbl/data/source/mod/$1" ]]
@@ -1173,9 +1228,11 @@ function process_deploy_modules_menu_options() {
             ;;
         help)
             MENU_ERR_MSG="Load help documentation"
+            gen_menu "help"
             ;;
         about)
             MENU_ERR_MSG="Brief project description"
+            gen_menu "about"
             ;;
         *)
             if [[ ! -d "$modules_path/crmbl-mod-$1" ]]
@@ -1257,21 +1314,18 @@ function process_modules_menu_options() {
             MENU_ERR_MSG="Download crmbl-mods from remote repo"
             bash ./download-repo.sh "mods"
             sleep 1
-            check_resources
             gen_menu "modules"
             ;;
         load-modules)
             MENU_ERR_MSG="Load crmbl-mods from local path"
             bash ./load-local-repo.sh "mods"
             sleep 1
-            check_resources
             gen_menu "modules"
             ;;
         pull-deployed-mods)
             MENU_ERR_MSG="Pull deployed mods to crmbl-mods"
             bash ./backup-mods.sh
             sleep 1
-            check_resources
             gen_menu "modules"
             ;;
         quit)
@@ -1280,9 +1334,11 @@ function process_modules_menu_options() {
             ;;
         help)
             MENU_ERR_MSG="Load help documentation"
+            gen_menu "help"
             ;;
         about)
             MENU_ERR_MSG="Brief project description"
+            gen_menu "about"
             ;;
         *)
             MENU_ERR_MSG="INVALID SELECTION: $1"
@@ -1346,61 +1402,39 @@ function process_engine_menu_options() {
             MENU_ERR_MSG="Deploy Engine to crmbl_site"
             bash ./deploy-engine.sh
             sleep 1
-            #engine_deployed=true
-            check_installs
-            check_resources
             gen_menu "engine"
             ;;
         backup-engine)
             MENU_ERR_MSG="Backup Engine to crmbl-engine"
             bash ./backup-engine.sh
             sleep 1
-            #engine_available=true
-            check_installs
-            check_resources
             gen_menu "engine"
             ;;
         remove-engine)
             MENU_ERR_MSG="Delete Engine from crmbl_site"
             bash ./remove-engine.sh
             sleep 1
-            engine_deployed=false
-            site_deployed=false
-            check_installs
-            check_resources
             gen_menu "engine"
             ;;
         delete-engine)
             MENU_ERR_MSG="Remove & Delete Engine from project"
             bash ./delete-engine.sh
             sleep 1
-            #engine_available=false
-            engine_available=false
-            check_installs
-            check_resources
             gen_menu "engine"
             ;;
         pull-deployed-engine)
             bash ./backup-engine.sh
             sleep 1
-            check_installs
-            check_resources
             gen_menu "engine"
             ;;
         download-engine)
             bash ./download-repo.sh "engine"
             sleep 1
-            #engine_available=true
-            check_installs
-            check_resources
             gen_menu "engine"
             ;;
         load-engine)
             bash ./load-local-repo.sh "engine"
             sleep 1
-            #engine_available=true
-            check_installs
-            check_resources
             gen_menu "engine"
             ;;
         quit)
@@ -1409,14 +1443,14 @@ function process_engine_menu_options() {
             ;;
         help)
             MENU_ERR_MSG="Load help documentation"
+            gen_menu "help"
             ;;
         about)
             MENU_ERR_MSG="Brief project description"
+            gen_menu "about"
             ;;
         *)
             MENU_ERR_MSG="INVALID SELECTION: $1"
-            check_installs
-            check_resources
             gen_menu "engine"
             ;;
     esac
@@ -1514,9 +1548,11 @@ function process_project_menu_options() {
             ;;
         help)
             MENU_ERR_MSG="Load help documentation"
+            gen_menu "help"
             ;;
         about)
             MENU_ERR_MSG="Brief project description"
+            gen_menu "about"
             ;;
         *)
             MENU_ERR_MSG="INVALID SELECTION: $1"
@@ -1645,13 +1681,81 @@ function process_main_menu_options() {
             ;;
         help)
             MENU_ERR_MSG="Load help documentation"
+            gen_menu "help"
             ;;
         about)
             MENU_ERR_MSG="Brief project description"
+            gen_menu "about"
             ;;
         *)
             MENU_ERR_MSG="INVALID SELECTION: $1"
             gen_menu "main"
+            ;;
+    esac
+}
+
+########
+# HELP #
+########
+
+## Help Menu
+
+function display_help_menu_options() {
+    possible_selections=0
+    echo "---HELP PAGE---"
+    add_menu_options "back"
+}
+
+function process_help_menu_options() {
+    case $1 in
+        quit)
+            clear
+            exit 1
+            ;;
+        help)
+            MENU_ERR_MSG="Load help documentation"
+            gen_menu "help"
+            ;;
+        about)
+            MENU_ERR_MSG="Brief project description"
+            gen_menu "about"
+            ;;
+        *)
+            MENU_ERR_MSG="INVALID SELECTION: $1"
+            gen_menu "help"
+            ;;
+    esac
+}
+
+#########
+# ABOUT #
+#########
+
+## About Menu
+
+function display_about_menu_options() {
+    possible_selections=0
+    echo "--About CRMBL CMS--"
+    add_menu_options "back"
+}
+
+function process_about_menu_options () {
+    case $1 in
+        quit)
+            clear
+            exit 1
+            ;;
+        help)
+            MENU_ERR_MSG="Load help documentation"
+            gen_menu "help"
+            ;;
+        about)
+            MENU_ERR_MSG="Brief project description"
+            gen_menu "about"
+            ;;
+        *)
+            MENU_ERR_MSG="INVALID SELECTION: $1"
+            gen_menu "about"
             ;;
     esac
 }
@@ -1661,6 +1765,9 @@ function process_main_menu_options() {
 ############
 
 function gen_menu() {
+    check_installs
+    check_resources
+    ##Need to implement intake of arguments as well
     menu_type="$1"
     #
     #Menu's List:
@@ -1670,6 +1777,12 @@ function gen_menu() {
             title="Main"
             display_status=true
             display_resources=false
+            ;;
+        about)
+            title="About crmbl"
+            ;;
+        help)
+            title="help"
             ;;
         project)
             title="Projects"
@@ -1810,9 +1923,10 @@ function gen_menu() {
 
     if [[ $display_status == true ]]
     then
+        ##SPLIT INTO GENERIC VARIABLE NAMES
         echo "[Status]"
         display_installs #Display published, deployed
-        check_resources
+        #check_resources
         case $res_type in
             modules)
                 if [[ $modules_exist == true ]]
@@ -1930,8 +2044,12 @@ function gen_menu() {
 
     if [[ $display_resources == true ]]
     then
-        echo "[$res_name]"
+        echo "[$res_name]" #CHANGE TO RESOURCE NAME VARIABLE
         merge_arrays
+        #echo "Ava: ${ava_res_list[@]}"
+        #echo "Dep: ${dep_res_list[@]}"
+        #echo "Pub: ${pub_res_list[@]}"
+        #echo "All: ${all_modules[@]}"
         for temp_res in "${all_modules[@]}"
         do
             printf "  $temp_res "
@@ -1959,6 +2077,12 @@ function gen_menu() {
         main)
             display_main_menu_options
             ;;
+        about)
+            display_about_menu_options
+            ;;
+        help)
+            display_help_menu_options
+            ;;
         project)
             display_project_menu_options
             ;;
@@ -1966,7 +2090,7 @@ function gen_menu() {
             display_engine_menu_options
             ;;
         modules)
-            display_modules_menu_options
+            display_modules_menu_options #CHange call by resource type
             ;;
         deploy-modules)
             display_deploy_modules_menu_options
@@ -2019,9 +2143,19 @@ function gen_menu() {
     crmbl_selections=$(($possible_selections - $optional_selections))
     if [[ "$menu_type" == "main" ]]
     then
-        printf "(1-$crmbl_selections)[H,A,Q]: "
+        if [[ "$crmbl_selections" -gt 0 ]]
+        then
+            printf "(1-$crmbl_selections)[H,A,Q]: "
+        else
+            printf "[H,A,Q]: "
+        fi
     else
-        printf "(1-$crmbl_selections)[B,H,A,Q]: "
+        if [[ "$crmbl_selections" -gt 0 ]]
+        then
+            printf "(1-$crmbl_selections)[B,H,A,Q]: "
+        else
+            printf "[B,H,A,Q]: "
+        fi
     fi
     read user_input
     #
@@ -2042,6 +2176,12 @@ function gen_menu() {
             deploy-templates|backup-templates|remove-templates|delete-templates)
                 gen_menu "templates"
                 ;;
+            help)
+                gen_menu "main"
+                ;;
+            about)
+                gen_menu "main"
+                ;;
         esac
     fi
     [[ "$user_input" == "h" || "$user_input" == "H" ]] && user_input="$(($possible_selections - 2))"
@@ -2054,14 +2194,20 @@ function gen_menu() {
         main)
             process_main_menu_options "${selection_array[$user_input]}"
             ;;
+        about)
+            process_about_menu_options "${selection_array[$user_input]}"
+            ;;
+        help)
+            process_help_menu_options "${selection_array[$user_input]}"
+            ;;
         project)
             process_project_menu_options "${selection_array[$user_input]}"
             ;;
         engine)
             process_engine_menu_options "${selection_array[$user_input]}"
             ;;
-        modules)
-            process_modules_menu_options "${selection_array[$user_input]}"
+        modules) #This one is proper.. make sure to set arguments if needed
+            process_modules_menu_options "${selection_array[$user_input]}" #Change call by resource type
             ;;
         deploy-modules)
             process_deploy_modules_menu_options "${selection_array[$user_input]}"
