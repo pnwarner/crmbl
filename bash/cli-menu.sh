@@ -1702,7 +1702,48 @@ function process_main_menu_options() {
 
 function display_help_menu_options() {
     possible_selections=0
-    echo "---HELP PAGE---"
+    cat << EOF
+
+-----
+Help - crmbl "CMS"
+
+Deploy a site using the engine, sites, modules, and templates. New site, module, and template development is further documented at https://github.com/pnwarner/crmbl
+
+Resources can be loaded from the project repository, or through local paths, as long as they have been backed up with the proper project structure.
+
+It is recommended to create and deploy a new site, and create changes in the crmbl_site/ folder.  Once backed up: copies can be edited and re-deployed from their proper resource structures. (engine, modules, sites, and templates)
+
+Deployed sites can then be published to the defined webroot path in the crmbl-utils/bash/crmbl.conf file.
+  WebRoot=/path/to/web/root
+  Also, to disable the use of sudo and chown:
+    set RootUser=On
+  Otherwise, script will publish to WebRoot path as sudo command.
+
+crmbl can also detect previously published sites and resources, and pull them back into the project folder to be edited, backed-up, and re-published. 
+
+[ ] Site Deployed
+[ ] Site Published
+  -will Be checked with an 'x' if they are properly deployed.
+  - a '(!)' will be shown if the site is not published or deployed, or a resource is suspected to not be present.
+    
+  -[E] Represents the presence of an Engine
+  -[M] Represents the presence of Modules
+  -[S] Represents the presence of Sites
+  -[T] Represents the presence of Templates
+
+Resources (modules, sites, templates) are listed with the following tags in their corresponding menus:
+
+  -[A] 'Available' to be deployed
+  -[D]  Resource is 'Deployed'
+  -[P]  Resource is 'Published'
+
+This tool was developed with the intention of site deployment and administration. New content management automation is still under development, and will be released with the additions of the user system, and web-console in the future.
+
+Please read the project README.md in the project repository or contact the author for further assistance.
+
+-----
+
+EOF
     add_menu_options "back"
 }
 
@@ -1735,7 +1776,24 @@ function process_help_menu_options() {
 
 function display_about_menu_options() {
     possible_selections=0
-    echo "--About CRMBL CMS--"
+    cat << EOF
+
+-----
+crmbl "CMS"
+  https://github.com/pnwarner/crmbl
+  Version: (tbd)
+  Author: Patrick Warner
+     github.com/pnwarner
+     patrick.warner@paradoxresearch.net
+
+crmbl is a CMS (content management system) / service hosting resource in EARLY STAGES."
+The project is under heavy development. This tool was developed for creation of static pages, and for further developing resources for the project. Site content management will not be introduced until the release of the web console, and user system.
+    
+  Questions, suggestions, and bug reporting can be emailed to the author.
+-----   
+
+EOF
+
     add_menu_options "back"
 }
 
@@ -1779,10 +1837,10 @@ function gen_menu() {
             display_resources=false
             ;;
         about)
-            title="About crmbl"
+            title="About - crmbl"
             ;;
         help)
-            title="help"
+            title="crmbl - Help"
             ;;
         project)
             title="Projects"
