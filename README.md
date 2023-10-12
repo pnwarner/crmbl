@@ -1351,9 +1351,30 @@ Add some basic configuration, and save the file `Ctrl + o` and exit `Ctrl + x`
 	ServerAdmin admin@localhost
 	DirectoryIndex index.php
     <Directory /var/www/html/crmbl>
+        Order Allow,Deny
+        Allow from all
+        Options -Indexes
+        AllowOverride None
+        Require all granted
+    </Directory>
+	<Directory /var/www/html/crmbl/data>
+		Order Allow,Deny
+		Deny from all
+		Options None
+		AllowOverride None
+	</Directory>
+	<Directory /var/www/html/crmbl/include>
+		Order Allow,Deny
+		Allow from all
 		Options -Indexes
 		AllowOverride None
 		Require all granted
+	</Directory>
+	<Directory /var/www/html/crmbl/template>
+		Order Allow,Deny
+		Deny from all
+		Options None
+		AllowOverride None
 	</Directory>
 </VirtualHost>
 ```
