@@ -7,11 +7,19 @@
 			require_once($site_mod_quick_gallery_php_run_path);
   		}
 	}
-    //$folder_name="portfolio/grooming"
-  //global $folder_name;
+
+/*
+  quick_gallery_run($folder_name);
+
+  !!! quick_gallery_run() should still be made relevant for use in NO-SCRIPT environment, and
+      place images, and links in the DOM.  This function will be moved to the start of this file
+      in order to populate media in script, or select a seperate _display_quick-gallery source.
+
+      This function is still important for checking if images are in the /include/media/site/<$SITE_NAME>/images/<$FOLDER_NAME>
+  !!!
+*/
+
 ?>
-<script type="text/javascript" src="include/script/mod/quick-gallery/quick-gallery.js"></script>
-<link rel="stylesheet" href="/include/style/mod/quick-gallery/quick-gallery.css.php?v=1.0">
 <!--Quick Gallery Wrapper -->
 <section class="quick_gallery_display" id="quick-gallery-<?=$folder_name?>">
   <!--Image Display, and Next and Previous Image button container: -->
@@ -39,10 +47,4 @@
     <div class="quick_gallery_thumb_display" id="quick-gallery-<?=$folder_name?>-thumbs">
     </div>
   </div>
-<?php
-//echo "\$folder_name:" . $folder_name;
-//echo "\$site_mod_quick_gallery_site_name: " . $site_mod_quick_gallery_site_name;
-//echo "Calling quick_gallery_run()";
-  quick_gallery_run($folder_name);
-?>
 </section>
