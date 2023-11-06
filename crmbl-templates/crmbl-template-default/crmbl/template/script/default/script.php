@@ -6,10 +6,24 @@
 			require_once($site_mod_client_info_js_path);
 		}
 	}
+	$theme_js = array(
+		'main' => array(
+			'type' => 'text/javascript',
+			'name' => 'main.js',
+			'path-type' => 'script',
+			'media-path-type' => 'template',
+			'path-name' => 'default',
+			'media-path' => '',
+			'url' => '',
+			'attr' => array(),
+			'version' => ''
+		)
+	);
 
-	//Load additional scripts in /include/script/site/<SITE NAME>/js/*
+	$theme_js = array_merge($theme_js, $site_config['include_scripts']);
+	$theme_js = array_merge($theme_js, $site_config['include_mod_scripts']);
+	$theme_js = array_merge($theme_js, $site_config['include_additional_scripts']);
+	foreach ($theme_js as $value) {
+		insert_script_resource($value);
+	}
 ?>
-<!--<script type="text/javascript" src="/include/script/site/<?=$site_config['site_name']?>/js/main.js">-->
-<script type="text/javascript" src="/include/script/template/<?=$site_config['theme_script']?>/main.js">
-</script>
-

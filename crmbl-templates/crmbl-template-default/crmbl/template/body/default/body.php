@@ -39,7 +39,6 @@
 	$site_content_string = 'data/config/site/' . $site_config['site_name'] . '/site_content/' . $site_config['site_content_request'] . '/_' . $site_config['site_content_request'] . '.php';
 	require_once($site_content_string);
 	//Include <script> to body
-	require_once($site_config['site_script_path']);
 	//echo "Loaded script <br />";
 
 	//Temp include MOD - data-mine - Display client info
@@ -77,4 +76,7 @@
 		<p id="copyright">Copyright &copy 2023 crmbl CMS</p>
     </footer>
   </div>
+<?php
+	require_once($site_config['site_script_path']);
+?>
 </body>
