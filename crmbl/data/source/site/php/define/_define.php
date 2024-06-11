@@ -10,6 +10,12 @@
 		'site_display_page' => true,
 		'site_name' => "",
 		'site_theme' => "",
+		'site_address' => "",
+		'site_address_link_name' => "",
+		'site_landing_message' => "",
+		'site_email' => "",
+		'site_header_message' => "",
+		'company_phone_number' => "",
 		'mods_available' => [],
 		'mods_enabled' => [],
 		'mods_loaded' => [],
@@ -74,10 +80,7 @@
 					$site_config[$key] = $site_array[$key];
 				}
 			} else {
-				$new_array = array(
-					$key => $value
-				);
-				array_push($site_config, $new_array);				
+				$site_config[$key] = $site_array[$key];			
 			}
 		}
 
@@ -103,7 +106,7 @@
 			$site_config['theme_script'] = $site_config['site_theme'];
 		} 
 		$site_config['site_config_path'] = $site_config['site_config_path'] . $site_config['site_name'] . "/";
-		$site_config['site-content-path'] = $site_config['site_config_path'] . "site_content/";
+		$site_config['site_content_path'] = $site_config['site_config_path'] . "site_content/";
 		#
 		$site_config['site_mod_path'] = "data/source/mod/";
 		#
